@@ -3,11 +3,11 @@ import { TrafficLightService } from '../traffic-light-service.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-traffic-light',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './traffic-light.component.html',
-  styleUrl: './traffic-light.component.scss'
+    selector: 'app-traffic-light',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './traffic-light.component.html',
+    styleUrls: ['./traffic-light.component.scss']
 })
 
 export class TrafficLightComponent {

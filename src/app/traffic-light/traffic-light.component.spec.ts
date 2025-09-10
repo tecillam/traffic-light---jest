@@ -1,20 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrafficLightService } from '../traffic-light-service.service';
 import { TrafficLightComponent } from './traffic-light.component';
-import { of } from 'rxjs';
 
 describe('TrafficLightComponent', () => {
   let component: TrafficLightComponent;
   let fixture: ComponentFixture<TrafficLightComponent>;
-  let mockTrafficLightService: jasmine.SpyObj<TrafficLightService>;
+  let mockTrafficLightService: Partial<
+    Record<keyof TrafficLightService, jest.Mock>
+  >;
 
   beforeEach(async () => {
-    mockTrafficLightService = jasmine.createSpyObj('TrafficLightService', ['simulateRoadTraffic']);
-    mockTrafficLightService.simulateRoadTraffic.and.returnValue(['initial_mock_road', 'step1_mock_road']);
+    // simulating TrafficLightService with just one method
+    mockTrafficLightService = {
+      simulateRoadTraffic: jest
+        .fn()
+        .mockReturnValue(['initial_mock_road', 'step1_mock_road']),
+    };
 
     await TestBed.configureTestingModule({
       imports: [TrafficLightComponent],
-      providers: [{ provide: TrafficLightService, useValue: mockTrafficLightService }]
+      providers: [
+        // Indicate that when TrafficLightService is requested, should use the mock instead the real service
+        { provide: TrafficLightService, useValue: mockTrafficLightService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TrafficLightComponent);
@@ -24,7 +32,5 @@ describe('TrafficLightComponent', () => {
 
   it('Should test service consumption', () => {
     expect(mockTrafficLightService.simulateRoadTraffic).toHaveBeenCalled();
-  })
-
-  
+  });
 });
